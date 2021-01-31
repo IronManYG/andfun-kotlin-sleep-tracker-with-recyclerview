@@ -20,31 +20,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
+class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
-    // TODO (03) Update SleepNightAdapter class to extend ListAdapter.
+    //  (03) Update SleepNightAdapter class to extend ListAdapter.
 
-    // TODO (04) Delete the data field and getItemCount() function.
-
-    var data = listOf<SleepNight>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun getItemCount() = data.size
+    //  (04) Delete the data field and getItemCount() function.
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        // TODO (05) Replace data[position] with getItem().
-        val item = data[position]
+        //  (05) Replace data[position] with getItem().
+        val item = getItem(position)
 
         holder.bind(item)
     }
@@ -85,8 +79,20 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
         }
     }
 
-    // TODO (01) Create a new class called SleepNightDiffCallback that extends
+    //  (01) Create a new class called SleepNightDiffCallback that extends
     // DiffUtil.ItemCallback<SleepNight>.
+    class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>(){
 
-    // TODO (02) In SleepNightDiffCallback, override areItemsTheSame() and areContentsTheSame().
+        //  (02) In SleepNightDiffCallback, override areItemsTheSame() and areContentsTheSame().
+
+        override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+            return oldItem.nightId == newItem.nightId
+        }
+
+        override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
 }
